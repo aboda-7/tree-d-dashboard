@@ -50,13 +50,13 @@ const Dashboard = () => {
 
   const languages = data?.stored_data?.[0]?.languages
   ? [
-      { name: "Arabic", value: data.stored_data[0].languages.ar || 0, color: "#E85D75", flag: "/assets/flags/arabic7.png" },
-      { name: "English", value: data.stored_data[0].languages.en || 0,  color: "#4A90E2", flag: "/assets/flags/england.png" },
-      { name: "Korean", value: data.stored_data[0].languages.ko || 0,  color: "#7B68EE", flag: "/assets/flags/korea.png" },
-      { name: "Japanese", value: data.stored_data[0].languages.ja || 0,  color: "#FF6B9D", flag: "/assets/flags/japan.png" },
-      { name: "Spanish", value: data.stored_data[0].languages.sp || 0,  color: "#F5A623", flag: "/assets/flags/spain.png" },
-      { name: "German", value: data.stored_data[0].languages.gr || 0,  color: "#50E3C2", flag: "/assets/flags/germany.png" },
-      { name: "French", value: data.stored_data[0].languages.fr || 0,  color: "#BD10E0", flag: "/assets/flags/french.png" }
+      { name: "Arabic", value: data.stored_data[0].languages.ar || 0, color: "#E85D75", flag: "/assets/Flags/arabic7.png" },
+      { name: "English", value: data.stored_data[0].languages.en || 0,  color: "#4A90E2", flag: "/assets/Flags/england.png" },
+      { name: "Korean", value: data.stored_data[0].languages.ko || 0,  color: "#7B68EE", flag: "/assets/Flags/korea.png" },
+      { name: "Japanese", value: data.stored_data[0].languages.ja || 0,  color: "#FF6B9D", flag: "/assets/Flags/japan.png" },
+      { name: "Spanish", value: data.stored_data[0].languages.sp || 0,  color: "#F5A623", flag: "/assets/Flags/spain.png" },
+      { name: "German", value: data.stored_data[0].languages.gr || 0,  color: "#50E3C2", flag: "/assets/Flags/germany.png" },
+      { name: "French", value: data.stored_data[0].languages.fr || 0,  color: "#BD10E0", flag: "/assets/Flags/french.png" }
     ].sort((a, b) => b.value - a.value)
   : [];
 
