@@ -25,7 +25,7 @@ const Artifact = () => {
       setArtifactsData([
         {
           name: "Ain Ghazal",
-          pic: "/assets/artifacts/ain_ghazal.png",
+          pic: "/assets/Artifacts/ain_ghazal.png",
           color: "#8B7355",
           completionRate: 78,
           languages: [
