@@ -1,0 +1,47 @@
+.notfound-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 94vh;
+  background-color: #f9f9f9;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  padding: 20px;
+}
+
+.notfound-image {
+  width: 250px;
+  max-width: 80%;
+}
+
+.notfound-title {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.notfound-description {
+  font-size: 1.5rem;
+  color: #666;
+  font-family: 'Montserrat', sans-serif;
+  max-width: 300px;
+}
+
+.notfound-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 500px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+}
+
+.notfound-button:hover {
+  background-color: #0056b3;
+}
