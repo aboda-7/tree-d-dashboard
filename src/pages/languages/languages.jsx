@@ -15,13 +15,13 @@ const Languages = () => {
   const { data, isConnected, lastUpdate } = useDashboardData();
 
   const languages = [
-    { id: "arabic", name: "Arabic", color: "#E85D75", flag: "/assets/flags/arabic7.png", interactions: data.stored_data[0].languages.ar || 0, },
-    { id: "english", name: "English", color: "#4A90E2", flag: "/assets/flags/england.png", interactions: data.stored_data[0].languages.en || 0, },
-    { id: "korean", name: "Korean", color: "#7B68EE", flag: "/assets/flags/korea.png", interactions: data.stored_data[0].languages.ko || 0, },
-    { id: "japanese", name: "Japanese", color: "#FF6B9D", flag: "/assets/flags/japan.png", interactions: data.stored_data[0].languages.ja || 0, },
-    { id: "spanish", name: "Spanish", color: "#F5A623", flag: "/assets/flags/spain.png", interactions: data.stored_data[0].languages.sp || 0, },
-    { id: "german", name: "German", color: "#50E3C2", flag: "/assets/flags/germany.png", interactions: data.stored_data[0].languages.gr || 0, },
-    { id: "french", name: "French", color: "#BD10E0", flag: "/assets/flags/french.png", interactions: data.stored_data[0].languages.fr || 0, },
+    { id: "arabic", name: "Arabic", color: "#E85D75", flag: "/assets/Flags/arabic7.png", interactions: data.stored_data[0].languages.ar || 0, },
+    { id: "english", name: "English", color: "#4A90E2", flag: "/assets/Flags/england.png", interactions: data.stored_data[0].languages.en || 0, },
+    { id: "korean", name: "Korean", color: "#7B68EE", flag: "/assets/Flags/korea.png", interactions: data.stored_data[0].languages.ko || 0, },
+    { id: "japanese", name: "Japanese", color: "#FF6B9D", flag: "/assets/Flags/japan.png", interactions: data.stored_data[0].languages.ja || 0, },
+    { id: "spanish", name: "Spanish", color: "#F5A623", flag: "/assets/Flags/spain.png", interactions: data.stored_data[0].languages.sp || 0, },
+    { id: "german", name: "German", color: "#50E3C2", flag: "/assets/Flags/germany.png", interactions: data.stored_data[0].languages.gr || 0, },
+    { id: "french", name: "French", color: "#BD10E0", flag: "/assets/Flags/french.png", interactions: data.stored_data[0].languages.fr || 0, },
   ].sort((a, b) => b.interactions - a.interactions);
 
 

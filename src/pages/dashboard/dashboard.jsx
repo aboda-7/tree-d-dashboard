@@ -90,9 +90,9 @@ const Dashboard = () => {
 
   const artifacts = data?.stored_data?.[0]?.artifacts
   ? [
-    { name: "Ain Ghazal", value: st1, color: "#8B7355", pic: "/assets/artifacts/ain_ghazal.png" },
-    { name: "Atargatis", value: st2, color: "#C17F5D", pic: "/assets/artifacts/atargatis.png" },
-    { name: "Mesha Stele", value: st3, color: "#A0826D", pic: "/assets/artifacts/mesha_stele.png" }
+    { name: "Ain Ghazal", value: st1, color: "#8B7355", pic: "/assets/Artifacts/ain_ghazal.png" },
+    { name: "Atargatis", value: st2, color: "#C17F5D", pic: "/assets/Artifacts/atargatis.png" },
+    { name: "Mesha Stele", value: st3, color: "#A0826D", pic: "/assets/Artifacts/mesha_stele.png" }
   ]
   : [];
 

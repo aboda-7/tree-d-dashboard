@@ -15,13 +15,13 @@ const LanguageDetail = () => {
 
 
   const langData = {
-    arabic: { name: "Arabic", color: "#E85D75", flag: "/assets/flags/arabic7.png" },
-    english: { name: "English", color: "#4A90E2", flag: "/assets/flags/england.png" },
-    korean: { name: "Korean", color: "#7B68EE", flag: "/assets/flags/korea.png" },
-    japanese: { name: "Japanese", color: "#FF6B9D", flag: "/assets/flags/japan.png" },
-    spanish: { name: "Spanish", color: "#F5A623", flag: "/assets/flags/spain.png" },
-    german: { name: "German", color: "#50E3C2", flag: "/assets/flags/germany.png" },
-    french: { name: "French", color: "#BD10E0", flag: "/assets/flags/french.png" },
+    arabic: { name: "Arabic", color: "#E85D75", flag: "/assets/Flags/arabic7.png" },
+    english: { name: "English", color: "#4A90E2", flag: "/assets/Flags/england.png" },
+    korean: { name: "Korean", color: "#7B68EE", flag: "/assets/Flags/korea.png" },
+    japanese: { name: "Japanese", color: "#FF6B9D", flag: "/assets/Flags/japan.png" },
+    spanish: { name: "Spanish", color: "#F5A623", flag: "/assets/Flags/spain.png" },
+    german: { name: "German", color: "#50E3C2", flag: "/assets/Flags/germany.png" },
+    french: { name: "French", color: "#BD10E0", flag: "/assets/Flags/french.png" },
   };
 
   // Mock artifacts data for the selected language

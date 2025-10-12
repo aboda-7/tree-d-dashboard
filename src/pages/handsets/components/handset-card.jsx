@@ -13,17 +13,8 @@ const HandsetCard = ({ handset }) => {
                 backgroundColor: "white",
                 borderRadius: "16px",
                 padding: "24px",
-                cursor: "pointer",
                 boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
                 transition: "transform 0.2s ease, box-shadow 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-5px)";
-                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.1)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.08)";
               }}
             >
               <div
@@ -35,7 +26,7 @@ const HandsetCard = ({ handset }) => {
                 }}
               >
                 <img
-                  src='/assets/handsets/handset.png'
+                  src='/assets/Handsets/handset.png'
                   alt={handset.name}
                   style={{
                     width: "80px",
