@@ -1,18 +1,18 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../../shared/components/layout";
 import { ArrowLeft, TrendingUp } from "lucide-react";
 import Footer from "../../shared/components/footer";
+import { useDashboardData } from "../../hooks/use_dashboard_data";
 
 const LanguageDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { data, isConnected } = useDashboardData();
 
   useEffect(() => {
     document.title = `${id.charAt(0).toUpperCase() + id.slice(1)} | Tree'd Admin Panel`;
   }, [id]);
-
 
   const langData = {
     arabic: { name: "Arabic", color: "#E85D75", flag: "/assets/Flags/arabic7.png" },
@@ -24,12 +24,26 @@ const LanguageDetail = () => {
     french: { name: "French", color: "#BD10E0", flag: "/assets/Flags/french.png" },
   };
 
-  // Mock artifacts data for the selected language
-  const artifactsData = [
-    { name: "Ain Ghazal", pic: "/assets/Artifacts/ain_ghazal.png", value: 45000, color: "#8B7355" },
-    { name: "Atargatis", pic: "/assets/Artifacts/atargatis.png", value: 32000, color: "#C17F5D" },
-    { name: "Mesha Stele", pic: "/assets/Artifacts/mesha_stele.png", value: 28000, color: "#A0826D" },
-  ];
+  const artifactsData = useMemo(() => {
+    if (!data?.stored_data?.length) return [];
+
+    const langKey = id.slice(0, 2).toLowerCase(); // e.g. arabic -> ar, english -> en
+
+    // combine data from ALL devices 🔥
+    const totals = { st1: 0, st2: 0, st3: 0 };
+    data.stored_data.forEach((device) => {
+      if (!device.artifacts) return;
+      totals.st1 += device.artifacts.st1?.[langKey] || 0;
+      totals.st2 += device.artifacts.st2?.[langKey] || 0;
+      totals.st3 += device.artifacts.st3?.[langKey] || 0;
+    });
+
+    return [
+      { name: "Ain Ghazal", pic: "/assets/Artifacts/ain_ghazal.png", color: "#8B7355", value: totals.st1 },
+      { name: "Atargatis", pic: "/assets/Artifacts/atargatis.png", color: "#C17F5D", value: totals.st2 },
+      { name: "Mesha Stele", pic: "/assets/Artifacts/mesha_stele.png", color: "#A0826D", value: totals.st3 },
+    ];
+  }, [data, id]);
 
   const lang = langData[id];
 
@@ -39,9 +53,7 @@ const LanguageDetail = () => {
     return num.toString();
   };
 
-  if (!lang) {
-    return <div style={{ padding: 40 }}>Language not found</div>;
-  }
+  if (!lang) return <div style={{ padding: 40 }}>Language not found</div>;
 
   const totalInteractions = artifactsData.reduce((sum, artifact) => sum + artifact.value, 0);
   const maxValue = Math.max(...artifactsData.map((a) => a.value), 1);
@@ -83,7 +95,6 @@ const LanguageDetail = () => {
             boxShadow: "0 4px 16px rgba(0, 0, 0, 0.06)",
           }}
         >
-          {/* Header */}
           <div
             style={{
               display: "flex",
@@ -126,27 +137,22 @@ const LanguageDetail = () => {
                       color: "#2D3748",
                     }}
                   >
-                    {formatNumber(totalInteractions)} Total Interactions this month
+                    {isConnected
+                      ? `${formatNumber(totalInteractions)} Total Interactions`
+                      : "Connecting..."}
                   </span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Artifacts List */}
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {artifactsData.map((artifact) => {
-              const percentage = ((artifact.value / totalInteractions) * 100).toFixed(1);
-              
+              const percentage = totalInteractions
+                ? ((artifact.value / totalInteractions) * 100).toFixed(1)
+                : 0;
               return (
-                <div
-                  key={artifact.name}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "16px",
-                  }}
-                >
+                <div key={artifact.name} style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                   <div
                     style={{
                       minWidth: "140px",

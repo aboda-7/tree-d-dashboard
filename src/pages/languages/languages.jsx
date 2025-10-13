@@ -14,15 +14,35 @@ const Languages = () => {
   const navigate = useNavigate();
   const { data, isConnected, lastUpdate } = useDashboardData();
 
-  const languages = [
-    { id: "arabic", name: "Arabic", color: "#E85D75", flag: "/assets/Flags/arabic7.png", interactions: data.stored_data[0].languages.ar || 0, },
-    { id: "english", name: "English", color: "#4A90E2", flag: "/assets/Flags/england.png", interactions: data.stored_data[0].languages.en || 0, },
-    { id: "korean", name: "Korean", color: "#7B68EE", flag: "/assets/Flags/korea.png", interactions: data.stored_data[0].languages.ko || 0, },
-    { id: "japanese", name: "Japanese", color: "#FF6B9D", flag: "/assets/Flags/japan.png", interactions: data.stored_data[0].languages.ja || 0, },
-    { id: "spanish", name: "Spanish", color: "#F5A623", flag: "/assets/Flags/spain.png", interactions: data.stored_data[0].languages.sp || 0, },
-    { id: "german", name: "German", color: "#50E3C2", flag: "/assets/Flags/germany.png", interactions: data.stored_data[0].languages.gr || 0, },
-    { id: "french", name: "French", color: "#BD10E0", flag: "/assets/Flags/french.png", interactions: data.stored_data[0].languages.fr || 0, },
-  ].sort((a, b) => b.interactions - a.interactions);
+const totalLanguages = {
+    ar: 0, en: 0, fr: 0, sp: 0, gr: 0, ja: 0, ko: 0
+  };
+
+  data.stored_data.forEach(device => {
+    // sum languages
+    Object.keys(totalLanguages).forEach(lang => {
+      totalLanguages[lang] += device.languages?.[lang] || 0;
+    });
+  });
+
+  // now use totals to build your chart arrays
+  const languages = Object.keys(totalLanguages)
+    .map(lang => {
+      const langInfo = {
+        ar: { name: "Arabic", color: "#E85D75", flag: "/assets/Flags/arabic7.png" },
+        en: { name: "English", color: "#4A90E2", flag: "/assets/Flags/england.png" },
+        ko: { name: "Korean", color: "#7B68EE", flag: "/assets/Flags/korea.png" },
+        ja: { name: "Japanese", color: "#FF6B9D", flag: "/assets/Flags/japan.png" },
+        sp: { name: "Spanish", color: "#F5A623", flag: "/assets/Flags/spain.png" },
+        gr: { name: "German", color: "#50E3C2", flag: "/assets/Flags/germany.png" },
+        fr: { name: "French", color: "#BD10E0", flag: "/assets/Flags/french.png" }
+      }[lang];
+      return {
+        ...langInfo,
+        interactions: totalLanguages[lang]
+      };
+    })
+    .sort((a, b) => b.interactions - a.interactions);
 
 
   const formatNumber = (num) => {
@@ -59,7 +79,7 @@ const Languages = () => {
           {languages.map((lang) => (
             <div
               key={lang.id}
-              onClick={() => navigate(`/languages/${lang.id}`)}
+              onClick={() => navigate(`/languages/${lang.name.toLowerCase()}`)}
               style={{
                 backgroundColor: "white",
                 borderRadius: "16px",

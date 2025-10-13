@@ -48,57 +48,62 @@ const Dashboard = () => {
     );
   }
 
-  const languages = data?.stored_data?.[0]?.languages
-  ? [
-      { name: "Arabic", value: data.stored_data[0].languages.ar || 0, color: "#E85D75", flag: "/assets/Flags/arabic7.png" },
-      { name: "English", value: data.stored_data[0].languages.en || 0,  color: "#4A90E2", flag: "/assets/Flags/england.png" },
-      { name: "Korean", value: data.stored_data[0].languages.ko || 0,  color: "#7B68EE", flag: "/assets/Flags/korea.png" },
-      { name: "Japanese", value: data.stored_data[0].languages.ja || 0,  color: "#FF6B9D", flag: "/assets/Flags/japan.png" },
-      { name: "Spanish", value: data.stored_data[0].languages.sp || 0,  color: "#F5A623", flag: "/assets/Flags/spain.png" },
-      { name: "German", value: data.stored_data[0].languages.gr || 0,  color: "#50E3C2", flag: "/assets/Flags/germany.png" },
-      { name: "French", value: data.stored_data[0].languages.fr || 0,  color: "#BD10E0", flag: "/assets/Flags/french.png" }
-    ].sort((a, b) => b.value - a.value)
-  : [];
+  // sum all devices' data together
+  const totalLanguages = {
+    ar: 0, en: 0, fr: 0, sp: 0, gr: 0, ja: 0, ko: 0
+  };
 
-  const st1 = (
-    data.stored_data[0].artifacts.st1.ar +
-    data.stored_data[0].artifacts.st1.en +
-    data.stored_data[0].artifacts.st1.fr +
-    data.stored_data[0].artifacts.st1.sp +
-    data.stored_data[0].artifacts.st1.gr +
-    data.stored_data[0].artifacts.st1.ja +
-    data.stored_data[0].artifacts.st1.ko
-  );
-  const st2 = (
-    data.stored_data[0].artifacts.st2.ar +
-    data.stored_data[0].artifacts.st2.en +
-    data.stored_data[0].artifacts.st2.fr +
-    data.stored_data[0].artifacts.st2.sp +
-    data.stored_data[0].artifacts.st2.gr +
-    data.stored_data[0].artifacts.st2.ja +
-    data.stored_data[0].artifacts.st2.ko
-  );
-  const st3 = (
-    data.stored_data[0].artifacts.st3.ar +
-    data.stored_data[0].artifacts.st3.en +
-    data.stored_data[0].artifacts.st3.fr +
-    data.stored_data[0].artifacts.st3.sp +
-    data.stored_data[0].artifacts.st3.gr +
-    data.stored_data[0].artifacts.st3.ja +
-    data.stored_data[0].artifacts.st3.ko
-  );
+  const totalArtifacts = {
+    st1: { ar: 0, en: 0, fr: 0, sp: 0, gr: 0, ja: 0, ko: 0 },
+    st2: { ar: 0, en: 0, fr: 0, sp: 0, gr: 0, ja: 0, ko: 0 },
+    st3: { ar: 0, en: 0, fr: 0, sp: 0, gr: 0, ja: 0, ko: 0 }
+  };
 
-  const artifacts = data?.stored_data?.[0]?.artifacts
-  ? [
+  data.stored_data.forEach(device => {
+    // sum languages
+    Object.keys(totalLanguages).forEach(lang => {
+      totalLanguages[lang] += device.languages?.[lang] || 0;
+    });
+
+    // sum artifacts
+    Object.keys(totalArtifacts).forEach(st => {
+      Object.keys(totalArtifacts[st]).forEach(lang => {
+        totalArtifacts[st][lang] += device.artifacts?.[st]?.[lang] || 0;
+      });
+    });
+  });
+
+  // now use totals to build your chart arrays
+  const languages = Object.keys(totalLanguages)
+    .map(lang => {
+      const langInfo = {
+        ar: { name: "Arabic", color: "#E85D75", flag: "/assets/Flags/arabic7.png" },
+        en: { name: "English", color: "#4A90E2", flag: "/assets/Flags/england.png" },
+        ko: { name: "Korean", color: "#7B68EE", flag: "/assets/Flags/korea.png" },
+        ja: { name: "Japanese", color: "#FF6B9D", flag: "/assets/Flags/japan.png" },
+        sp: { name: "Spanish", color: "#F5A623", flag: "/assets/Flags/spain.png" },
+        gr: { name: "German", color: "#50E3C2", flag: "/assets/Flags/germany.png" },
+        fr: { name: "French", color: "#BD10E0", flag: "/assets/Flags/french.png" }
+      }[lang];
+      return {
+        ...langInfo,
+        value: totalLanguages[lang]
+      };
+    })
+    .sort((a, b) => b.value - a.value);
+
+  const st1 = Object.values(totalArtifacts.st1).reduce((a, b) => a + b, 0);
+  const st2 = Object.values(totalArtifacts.st2).reduce((a, b) => a + b, 0);
+  const st3 = Object.values(totalArtifacts.st3).reduce((a, b) => a + b, 0);
+
+  const artifacts = [
     { name: "Ain Ghazal", value: st1, color: "#8B7355", pic: "/assets/Artifacts/ain_ghazal.png" },
     { name: "Atargatis", value: st2, color: "#C17F5D", pic: "/assets/Artifacts/atargatis.png" },
     { name: "Mesha Stele", value: st3, color: "#A0826D", pic: "/assets/Artifacts/mesha_stele.png" }
-  ]
-  : [];
+  ];
 
   const maxValue = Math.max(...languages.map(l => l.value), 1);
 
-  console.log("Dashboard data:", data);
   return (
     <Layout bgColor="#1c2429">
       <div style={{
