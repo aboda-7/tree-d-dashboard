@@ -4,6 +4,7 @@ import Header from '../../shared/components/header';
 import Footer from '../../shared/components/footer';
 import ArtifactCard from './components/artifact-card';
 import { useDashboardData } from '../../hooks/use_dashboard_data';
+import SearchBar from './components/search-bar';
 
 const Artifact = () => {
   useEffect(() => {
@@ -12,6 +13,11 @@ const Artifact = () => {
 
   const { data, isConnected, lastUpdate } = useDashboardData();
   const [artifactsData, setArtifactsData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredArtifacts = artifactsData.filter(artifact =>
+    artifact.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     if (data?.stored_data?.length > 0) {
@@ -107,8 +113,10 @@ const Artifact = () => {
       >
         <Header title="Artifacts" isConnected={isConnected} />
 
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-          {artifactsData.map((artifact) => (
+          {filteredArtifacts.map((artifact) => (
             <ArtifactCard
               key={artifact.name}
               artifact={artifact}
