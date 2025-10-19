@@ -10,27 +10,27 @@ export const useDashboardData = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch(process.env.REACT_APP_API_URL, {
-          headers: {
-            'ngrok-skip-browser-warning': 'true',
-            'Content-Type': 'application/json'
-          }
-        });
+      // try {
+      //   const response = await fetch(process.env.REACT_APP_API_URL, {
+      //     headers: {
+      //       'ngrok-skip-browser-warning': 'true',
+      //       'Content-Type': 'application/json'
+      //     }
+      //   });
         
-        if (response.ok) {
-          const newData = await response.json();
-          setData(newData);
-          setIsConnected(true);
-          setLastUpdate(new Date());
-        } else {
-          setIsConnected(false);
-          console.warn("Backend responded but not OK:", response.status);
-        }
-      } catch (error) {
-        setIsConnected(false);
-        console.error('Error fetching data:', error);
-      }
+      //   if (response.ok) {
+      //     const newData = await response.json();
+      //     setData(newData);
+      //     setIsConnected(true);
+      //     setLastUpdate(new Date());
+      //   } else {
+      //     setIsConnected(false);
+      //     console.warn("Backend responded but not OK:", response.status);
+      //   }
+      // } catch (error) {
+      //   setIsConnected(false);
+      //   console.error('Error fetching data:', error);
+      // }
     };
 
     fetchData();
