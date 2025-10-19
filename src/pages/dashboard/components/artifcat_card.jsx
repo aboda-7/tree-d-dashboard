@@ -51,8 +51,8 @@ const ArtifactCard = ({ artifact, formatNumberArtifact }) => (
       src={artifact.pic}
       alt={artifact.name}
       style={{
-        width: '100px',
-        height: 'auto',
+        width: 'auto',
+        height: '150px',
         objectFit: 'contain',
         borderRadius: '12px',
       }}

@@ -8,55 +8,72 @@ import { useDashboardData } from "../../hooks/use_dashboard_data";
 const LanguageDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data, isConnected } = useDashboardData();
+  const { data, isConnected, lastUpdate } = useDashboardData();
 
   useEffect(() => {
     document.title = `${id.charAt(0).toUpperCase() + id.slice(1)} | Tree'd Admin Panel`;
   }, [id]);
 
+  // language metadata
   const langData = {
-    arabic: { name: "Arabic", color: "#E85D75", flag: "/assets/Flags/arabic7.png" },
-    english: { name: "English", color: "#4A90E2", flag: "/assets/Flags/england.png" },
-    korean: { name: "Korean", color: "#7B68EE", flag: "/assets/Flags/korea.png" },
-    japanese: { name: "Japanese", color: "#FF6B9D", flag: "/assets/Flags/japan.png" },
-    spanish: { name: "Spanish", color: "#F5A623", flag: "/assets/Flags/spain.png" },
-    german: { name: "German", color: "#50E3C2", flag: "/assets/Flags/germany.png" },
-    french: { name: "French", color: "#BD10E0", flag: "/assets/Flags/french.png" },
+    arabic: { name: "Arabic", color: "#E85D75", flag: "/assets/Flags/arabic7.png", key: "ar" },
+    english: { name: "English", color: "#4A90E2", flag: "/assets/Flags/england.png", key: "en" },
+    french: { name: "French", color: "#BD10E0", flag: "/assets/Flags/french.png", key: "fr" },
+    chinese: { name: "Chinese", color: "#7B68EE", flag: "/assets/Flags/china.png", key: "zh" },
+    dutch: { name: "Dutch", color: "#FF6B9D", flag: "/assets/Flags/netherlands.png", key: "nl" },
   };
 
+  const lang = langData[id];
+  if (!lang) return <div style={{ padding: 40 }}>Language not found</div>;
+
+  // compute artifact totals for this language
   const artifactsData = useMemo(() => {
     if (!data?.stored_data?.length) return [];
 
-    const langKey = id.slice(0, 2).toLowerCase(); // e.g. arabic -> ar, english -> en
+    // initialize artifacts
+    const totals = {
+      st15: 0, st16: 0, st17: 0, st18: 0, st19: 0,
+      st21: 0, st22: 0, st23: 0, st24: 0,
+    };
 
-    // combine data from ALL devices 🔥
-    const totals = { st1: 0, st2: 0, st3: 0 };
+    // combine across all devices
     data.stored_data.forEach((device) => {
-      if (!device.artifacts) return;
-      totals.st1 += device.artifacts.st1?.[langKey] || 0;
-      totals.st2 += device.artifacts.st2?.[langKey] || 0;
-      totals.st3 += device.artifacts.st3?.[langKey] || 0;
+      const artifacts = device.artifacts || {};
+      Object.keys(totals).forEach((st) => {
+        totals[st] += artifacts?.[st]?.[lang.key] || 0;
+      });
     });
 
-    return [
-      { name: "Ain Ghazal", pic: "/assets/Artifacts/ain_ghazal.png", color: "#8B7355", value: totals.st1 },
-      { name: "Atargatis", pic: "/assets/Artifacts/atargatis.png", color: "#C17F5D", value: totals.st2 },
-      { name: "Mesha Stele", pic: "/assets/Artifacts/mesha_stele.png", color: "#A0826D", value: totals.st3 },
-    ];
+    // artifact info
+    const meta = {
+      st15: { name: "Imhotep", color: "#C17F5D", pic: "/assets/Artifacts/Imhotep.png" },
+      st16: { name: "Osoris", color: "#B8926A", pic: "/assets/Artifacts/Osoris.png" },
+      st17: { name: "Stella of Queen Tetisheri", color: "#9B8B7E", pic: "/assets/Artifacts/Tetisheri.png" },
+      st18: { name: "Ain Ghazal", color: "#8B7355", pic: "/assets/Artifacts/ain_ghazal.png" },
+      st19: { name: "Roman Theatre", color: "#A0826D", pic: "/assets/Artifacts/Roman-Theatre.jpg" },
+      st21: { name: "Statue Of Liberty", color: "#D4A574", pic: "/assets/Artifacts/Statue-Of-Liberty.png" },
+      st22: { name: "Rosetta Stone", color: "#9B8B7E", pic: "/assets/Artifacts/Rosetta-Stone.png" },
+      st23: { name: "Van Gough Self-Portrait", color: "#D4A574", pic: "/assets/Artifacts/Van-Gough.png" },
+      st24: { name: "Mona Lisa", color: "#B8926A", pic: "/assets/Artifacts/Mona-Lisa.png" },
+    };
+
+    return Object.keys(totals).map((st) => ({
+      name: meta[st].name,
+      pic: meta[st].pic,
+      color: meta[st].color,
+      value: totals[st],
+    })).sort((a, b) => b.value - a.value);
   }, [data, id]);
 
-  const lang = langData[id];
+  const totalInteractions = artifactsData.reduce((sum, a) => sum + a.value, 0);
+  const maxValue = Math.max(...artifactsData.map((a) => a.value), 1);
 
   const formatNumber = (num) => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
+    if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + "B";
+    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
+    if (num >= 1_000) return (num / 1_000).toFixed(1) + "K";
     return num.toString();
   };
-
-  if (!lang) return <div style={{ padding: 40 }}>Language not found</div>;
-
-  const totalInteractions = artifactsData.reduce((sum, artifact) => sum + artifact.value, 0);
-  const maxValue = Math.max(...artifactsData.map((a) => a.value), 1);
 
   return (
     <Layout bgColor="#1c2429">
@@ -68,6 +85,7 @@ const LanguageDetail = () => {
           fontFamily: "'Montserrat', sans-serif",
         }}
       >
+        {/* Back Button */}
         <button
           onClick={() => navigate("/languages")}
           style={{
@@ -80,13 +98,13 @@ const LanguageDetail = () => {
             color: "#2D5F7F",
             marginBottom: "24px",
             fontSize: "16px",
-            fontFamily: "'Montserrat', sans-serif",
           }}
         >
           <ArrowLeft size={20} />
           Back
         </button>
 
+        {/* Language Header */}
         <div
           style={{
             backgroundColor: "white",
@@ -146,96 +164,106 @@ const LanguageDetail = () => {
             </div>
           </div>
 
+          {/* Artifact Breakdown */}
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {artifactsData.map((artifact) => {
-              const percentage = totalInteractions
-                ? ((artifact.value / totalInteractions) * 100).toFixed(1)
-                : 0;
-              return (
-                <div key={artifact.name} style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                  <div
+            const percentage = totalInteractions
+              ? ((artifact.value / totalInteractions) * 100).toFixed(1)
+              : 0;
+            return (
+              <div
+                key={artifact.name}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "200px 1fr 80px",
+                  alignItems: "center",
+                  gap: "16px",
+                }}
+              >
+                {/* Artifact info */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <img
+                    src={artifact.pic}
+                    alt={artifact.name}
                     style={{
-                      minWidth: "140px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
+                      width: "27px",
+                      height: "27px",
+                      objectFit: "contain",
+                      borderRadius: "4px",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#2D3748",
                     }}
                   >
-                    <img
-                      src={artifact.pic}
-                      alt={artifact.name}
-                      style={{
-                        width: "27px",
-                        height: "auto",
-                        borderRadius: "3px",
-                        objectFit: "contain",
-                      }}
-                    />
+                    {artifact.name}
+                  </span>
+                </div>
+
+                {/* Progress bar */}
+                <div
+                  style={{
+                    width: "100%",
+                    height: "30px",
+                    backgroundColor: "#E2E8F0",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                    position: "relative",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: `${(artifact.value / maxValue) * 100}%`,
+                      height: "100%",
+                      backgroundColor: artifact.color,
+                      borderRadius: "8px",
+                      transition: "width 0.5s ease",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      paddingRight: "12px",
+                    }}
+                  >
                     <span
                       style={{
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        color: "#2D3748",
-                      }}
-                    >
-                      {artifact.name}
-                    </span>
-                  </div>
-
-                  <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "16px" }}>
-                    <div
-                      style={{
-                        flex: 1,
-                        height: "32px",
-                        backgroundColor: "#E2E8F0",
-                        borderRadius: "8px",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: `${(artifact.value / maxValue) * 100}%`,
-                          height: "100%",
-                          backgroundColor: artifact.color,
-                          borderRadius: "8px",
-                          transition: "width 0.5s ease",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "flex-end",
-                          paddingRight: "12px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: "700",
-                            color: "white",
-                            textShadow: "0 1px 2px rgba(0,0,0,0.2)",
-                          }}
-                        >
-                          {percentage}%
-                        </span>
-                      </div>
-                    </div>
-
-                    <span
-                      style={{
-                        minWidth: "70px",
-                        textAlign: "right",
-                        fontSize: "18px",
+                        fontSize: "14px",
                         fontWeight: "700",
-                        color: artifact.color,
+                        color: "white",
+                        textShadow: "0 1px 2px rgba(0,0,0,0.2)",
                       }}
                     >
-                      {formatNumber(artifact.value)}
+                      {percentage}%
                     </span>
                   </div>
                 </div>
-              );
-            })}
+
+                {/* Number */}
+                <span
+                  style={{
+                    textAlign: "right",
+                    fontSize: "18px",
+                    fontWeight: "700",
+                    color: artifact.color,
+                  }}
+                >
+                  {formatNumber(artifact.value)}
+                </span>
+              </div>
+            );
+          })}
           </div>
         </div>
-        <Footer />
+
+        <Footer lastUpdate={lastUpdate} />
       </div>
     </Layout>
   );
