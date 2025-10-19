@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import HandsetCard from './handset-card';
 import HandsetFilter from './handset-filter';
+import { HandsetGridSkeleton } from './handset-grid-skeleton';
 import { useDashboardData } from '../../../hooks/use_dashboard_data';
 
 const HandsetGrid = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const { data, isConnected, lastUpdate } = useDashboardData();
   const [handsets, setHandsets] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // whenever backend data changes, update handsets
     if (data && data.stored_data) {
       const formatted = data.stored_data.map((device, index) => ({
         name: device.id || `Handset ${index + 1}`,
-
         battery: 90,
       }));
       setHandsets(formatted);
+      setIsLoading(false);
     }
   }, [data]);
 
+  // Show skeleton while loading
+  if (isLoading) {
+    return <HandsetGridSkeleton />;
+  }
+
+  // Rest of your existing code...
   const filterHandsets = (handsets, filter) => {
     if (filter === 'All') return handsets;
     return handsets.filter(handset => {
@@ -41,19 +49,7 @@ const HandsetGrid = () => {
 
   if (!isConnected) {
     return (
-      <div
-        style={{
-          backgroundColor: '#F5F7FA',
-          minHeight: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontFamily: "'Montserrat', sans-serif",
-          color: '#718096'
-        }}
-      >
-        <p>⚠️ Waiting for connection to backend...</p>
-      </div>
+      <HandsetGridSkeleton/>
     );
   }
 
