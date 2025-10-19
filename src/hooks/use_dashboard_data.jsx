@@ -11,8 +11,13 @@ export const useDashboardData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Make sure REACT_APP_API_URL = "http://localhost:8000" in your .env
-        const response = await fetch(`${process.env.REACT_APP_API_URL}`);
+        const response = await fetch(process.env.REACT_APP_API_URL, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+            'Content-Type': 'application/json'
+          }
+        });
+        
         if (response.ok) {
           const newData = await response.json();
           setData(newData);
