@@ -51,13 +51,13 @@ const CircularProgress = ({ percentage, color, size = 100 }) => {
         </div>
         <div
           style={{
-            fontSize: `${size / 8}px`,
+            fontSize: `${size / 9}px`,
             color: '#718096',
             marginTop: '2px',
             fontWeight: '600',
           }}
         >
-          Complete
+          Completion
         </div>
       </div>
     </div>

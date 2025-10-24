@@ -110,8 +110,9 @@
 
 .bottom-icon {
   padding: 0 10px;
-  margin-top: auto;
+  /* margin-top: auto; */
 }
+
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
