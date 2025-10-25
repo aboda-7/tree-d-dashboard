@@ -15,6 +15,7 @@ const Handsets = React.lazy(() => import("./pages/handsets/handsets"));
 const NotFound = React.lazy(() => import("./pages/not-found/not-found"));
 const Login = React.lazy(() => import("./pages/auth/login"));
 const Signup = React.lazy(() => import("./pages/auth/signup"));
+const ForgotPassword = React.lazy(() => import("./pages/auth/forgetpassword"));
 
 // 🧩 ProtectedRoute component
 function ProtectedRoute({ children }) {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* ✅ each protected page wrapped individually */}
         <Route

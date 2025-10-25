@@ -111,7 +111,12 @@ export default function Login() {
             disabled={loading}
             className="btn-register"
             style={{ width: "50%" }}
-          />
+          />  
+
+          <p className="forgot_password" style={{ marginTop: "10px" }}>
+            <Link to="/forgot-password">Forgot password?</Link>
+          </p>
+
 
           <p className="sign_up_sure">
             Don't have an account? <Link to="/signup">Register</Link>

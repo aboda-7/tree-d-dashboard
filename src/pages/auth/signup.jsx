@@ -141,7 +141,7 @@ export default function SignUp() {
         <div className="sign_up_footer">
           <PrimaryButton
             label={loading ? "..." : "Sign Up"}
-            bgColor={app_colors.heroPrimaryButton}
+            bgColor={"#3e4b53ff"}
             onClick={onSignUp}
             disabled={loading}
             className="btn-register"

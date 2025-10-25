@@ -42,11 +42,11 @@
 
 .feature-slider-dot.is-active {
     width: 28px;
-    background: #278ae0;
+    background: #3e4b53ff;
 }
 
 .feature-slider-dot.is-active:hover {
-    background: #278ae0;
+    background: #3e4b53ff;
     transform: scale(1.1);
 }
 
