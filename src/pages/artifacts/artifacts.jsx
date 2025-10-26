@@ -18,6 +18,7 @@ const Artifact = () => {
   const { data, isConnected, lastUpdate } = useDashboardData();
   const [artifactsData, setArtifactsData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [isLoading, setIsLoading] = useState(true);
   const [completionRates, setCompletionRates] = useState([]);
 
@@ -133,10 +134,12 @@ const Artifact = () => {
     setIsLoading(false);
   }, [data, completionRates]);
 
-  const filteredArtifacts = artifactsData.filter(artifact =>
-    artifact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    artifact.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredArtifacts = artifactsData.filter(artifact => {
+    const matchesSearch = artifact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      artifact.category.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || artifact.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const formatNumber = (num) => {
     if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
@@ -163,7 +166,12 @@ const Artifact = () => {
         }}
       >
         <Header title="Artifacts" isConnected={isConnected} />
-        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <SearchBar 
+          searchQuery={searchQuery} 
+          setSearchQuery={setSearchQuery}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
           {filteredArtifacts.map((artifact) => (

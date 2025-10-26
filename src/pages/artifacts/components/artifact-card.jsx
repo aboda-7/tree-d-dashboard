@@ -39,16 +39,31 @@ const ArtifactCard = ({ artifact, formatNumber }) => {
             }}
           />
           <div>
-            <h2
-              style={{
-                fontSize: '28px',
-                fontWeight: '700',
-                color: '#2D3748',
-                margin: '0 0 8px 0',
-              }}
-            >
-              {artifact.name}
-            </h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+              <h2
+                style={{
+                  fontSize: '28px',
+                  fontWeight: '700',
+                  color: '#2D3748',
+                  margin: '0',
+                }}
+              >
+                {artifact.name}
+              </h2>
+              <span
+                style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: artifact.color,
+                  backgroundColor: `${artifact.color}15`,
+                  padding: '4px 12px',
+                  borderRadius: '6px',
+                  border: `1.5px solid ${artifact.color}`,
+                }}
+              >
+                {artifact.category}
+              </span>
+            </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <TrendingUp size={20} color={artifact.color} />
               <span
