@@ -16,6 +16,7 @@ const NotFound = React.lazy(() => import("./pages/not-found/not-found"));
 const Login = React.lazy(() => import("./pages/auth/login"));
 const Signup = React.lazy(() => import("./pages/auth/signup"));
 const ForgotPassword = React.lazy(() => import("./pages/auth/forgetpassword"));
+const ResetPassword = React.lazy(() => import("./pages/auth/resetpassword"));
 
 // 🧩 ProtectedRoute component
 function ProtectedRoute({ children }) {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />}/>
 
         {/* ✅ each protected page wrapped individually */}
         <Route

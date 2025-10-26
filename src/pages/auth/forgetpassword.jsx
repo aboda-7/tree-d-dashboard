@@ -59,9 +59,6 @@ export default function ForgotPassword() {
 
       <div className="sign_up_left">
         <h1 className="sign_up_header">Forgot your password?</h1>
-        <p style={{ color: "#555", marginBottom: "20px" }}>
-          Enter your email below and we’ll send you a link to reset your password.
-        </p>
 
         <div className={`sign_up_inputs ${showErrors ? "show-errors" : ""}`}>
           <StringInput
@@ -75,7 +72,7 @@ export default function ForgotPassword() {
 
         <div className="sign_up_footer">
           <PrimaryButton
-            label={loading ? "Sending..." : "Send Reset Link"}
+            label={loading ? "Sending..." : "Send Email"}
             bgColor={app_colors.primary || "#3e4b53ff"}
             onClick={onResetPassword}
             disabled={loading}
