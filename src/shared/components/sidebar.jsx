@@ -77,6 +77,17 @@ const Sidebar = ({ bgColor, onExpandChange }) => {
           to="/handsets"
         />
         <SidebarButton
+          icon={
+            location.pathname === "/completion-rate"
+              ? "/assets/Sidebar/CompletionRate-Black.png"
+              : "/assets/Sidebar/CompletionRate-White.png"
+          }
+          label="Completion Rate"
+          isExpanded={isExpanded}
+          active={location.pathname === "/completion-rate"}
+          to="/completion-rate"
+        />
+        <SidebarButton
           icon={"/assets/Sidebar/Logout-White.png"}
           label="Logout"
           isExpanded={isExpanded}

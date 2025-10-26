@@ -17,6 +17,7 @@ const Login = React.lazy(() => import("./pages/auth/login"));
 const Signup = React.lazy(() => import("./pages/auth/signup"));
 const ForgotPassword = React.lazy(() => import("./pages/auth/forgetpassword"));
 const ResetPassword = React.lazy(() => import("./pages/auth/resetpassword"));
+const CompletionRate = React.lazy(() => import("./pages/completion-rate/completion-rate"));
 
 // 🧩 ProtectedRoute component
 function ProtectedRoute({ children }) {
@@ -77,7 +78,7 @@ function App() {
             <ProtectedRoute>
               <LanguageDetail />
             </ProtectedRoute>
-          }
+          } 
         />
         <Route
           path="/handsets"
@@ -87,6 +88,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route 
+          path="completion-rate"
+          element={
+            <ProtectedRoute>
+              <CompletionRate/>
+            </ProtectedRoute>
+          }
+          />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
