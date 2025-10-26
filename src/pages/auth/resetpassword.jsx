@@ -20,13 +20,14 @@ export default function ResetPassword() {
   const [confirmPass, setConfirmPass] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showErrors, setShowErrors] = useState(false);
   const [alertState, setAlertState] = useState({
     open: false,
     message: "",
     error: true,
   });
 
-  // ✅ Verify code & get email
+  // ✅ verify link is valid + get email
   useEffect(() => {
     const verifyCode = async () => {
       try {
@@ -34,10 +35,10 @@ export default function ResetPassword() {
         setEmail(email);
         setLoading(false);
       } catch (err) {
-        console.error("[ResetPassword] Invalid or expired code:", err);
+        console.error("[ResetPassword] Invalid/expired link:", err);
         setAlertState({
           open: true,
-          message: "This reset link is invalid or expired. Try requesting a new one.",
+          message: "This reset link is invalid or expired. Please try again.",
           error: true,
         });
         setLoading(false);
@@ -48,6 +49,9 @@ export default function ResetPassword() {
   }, [oobCode]);
 
   const handleReset = async () => {
+    setShowErrors(true);
+
+    // 🔍 validation
     if (!password || password.length < 6) {
       return setAlertState({
         open: true,
@@ -59,7 +63,7 @@ export default function ResetPassword() {
     if (password !== confirmPass) {
       return setAlertState({
         open: true,
-        message: "Passwords don’t match!",
+        message: "Passwords do not match!",
         error: true,
       });
     }
@@ -69,7 +73,7 @@ export default function ResetPassword() {
       await confirmPasswordReset(auth, oobCode, password);
       setAlertState({
         open: true,
-        message: "✅ Password successfully reset! Redirecting to login...",
+        message: "✅ Password reset successfully! Redirecting to login...",
         error: false,
       });
       setTimeout(() => navigate("/login"), 2500);
@@ -95,7 +99,7 @@ export default function ResetPassword() {
 
   return (
     <div className="sign_up_container">
-      {/* 🔔 Alert banner */}
+      {/* 🔔 alert banner */}
       <AlertBanner
         open={alertState.open}
         message={alertState.message}
@@ -104,18 +108,16 @@ export default function ResetPassword() {
       />
 
       <div className="sign_up_left">
-        <h1 className="sign_up_header">Reset Your Password 🔒</h1>
-        <p className="sign_up_subtext">
-          for <strong>{email}</strong>
-        </p>
+        <h1 className="sign_up_header">Reset Password</h1>
 
-        <div className="sign_up_inputs show-errors">
+        <div className={`sign_up_inputs ${showErrors ? "show-errors" : ""}`}>
           <StringInput
             title="New Password"
             placeholder="Enter new password"
             isPassword
             value={password}
             onChange={setPassword}
+            validate={(v) => v.length >= 6}
           />
           <StringInput
             title="Confirm Password"
@@ -123,6 +125,7 @@ export default function ResetPassword() {
             isPassword
             value={confirmPass}
             onChange={setConfirmPass}
+            validate={(v) => v === password}
           />
         </div>
 
@@ -133,11 +136,11 @@ export default function ResetPassword() {
             onClick={handleReset}
             disabled={loading}
             className="btn-register"
-            style={{ width: "60%" }}
+            style={{ width: "55%" }}
           />
 
           <p className="sign_up_sure">
-            Remember your password? <Link to="/login">Back to Login</Link>
+            Remembered your password? <Link to="/login">Back to Login</Link>
           </p>
         </div>
       </div>
