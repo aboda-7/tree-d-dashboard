@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import Layout from '../../shared/components/layout';
+import Slider from '@mui/material/Slider';
+import Box from '@mui/material/Box';
 
 const CircularProgress = ({ percentage, color, size = 80 }) => {
   const strokeWidth = 8;
@@ -58,6 +60,7 @@ const CircularProgress = ({ percentage, color, size = 80 }) => {
 
 const CompletionRate = () => {
   const [expandedLang, setExpandedLang] = useState(null);
+  const [completionRange, setCompletionRange] = useState([0, 100]);
 
   const languagesData = useMemo(() => ({
     arabic: {
@@ -74,7 +77,7 @@ const CompletionRate = () => {
         { name: "Rosetta Stone", color: "#9B8B7E", pic: "/assets/Artifacts/Rosetta-Stone.png", completion: 88 },
         { name: "Van Gough Self-Portrait", color: "#D4A574", pic: "/assets/Artifacts/Van-Gough.png", completion: 76 },
         { name: "Mona Lisa", color: "#B8926A", pic: "/assets/Artifacts/Mona-Lisa.png", completion: 91 },
-      ]
+      ].sort((a, b) => b.completion - a.completion)
     },
     english: {
       name: "English",
@@ -90,7 +93,7 @@ const CompletionRate = () => {
         { name: "Rosetta Stone", color: "#9B8B7E", pic: "/assets/Artifacts/Rosetta-Stone.png", completion: 93 },
         { name: "Van Gough Self-Portrait", color: "#D4A574", pic: "/assets/Artifacts/Van-Gough.png", completion: 88 },
         { name: "Mona Lisa", color: "#B8926A", pic: "/assets/Artifacts/Mona-Lisa.png", completion: 97 },
-      ]
+      ].sort((a, b) => b.completion - a.completion)
     },
     french: {
       name: "French",
@@ -106,7 +109,7 @@ const CompletionRate = () => {
         { name: "Rosetta Stone", color: "#9B8B7E", pic: "/assets/Artifacts/Rosetta-Stone.png", completion: 84 },
         { name: "Van Gough Self-Portrait", color: "#D4A574", pic: "/assets/Artifacts/Van-Gough.png", completion: 79 },
         { name: "Mona Lisa", color: "#B8926A", pic: "/assets/Artifacts/Mona-Lisa.png", completion: 96 },
-      ]
+      ].sort((a, b) => b.completion - a.completion)
     },
     chinese: {
       name: "Chinese",
@@ -122,7 +125,7 @@ const CompletionRate = () => {
         { name: "Rosetta Stone", color: "#9B8B7E", pic: "/assets/Artifacts/Rosetta-Stone.png", completion: 69 },
         { name: "Van Gough Self-Portrait", color: "#D4A574", pic: "/assets/Artifacts/Van-Gough.png", completion: 58 },
         { name: "Mona Lisa", color: "#B8926A", pic: "/assets/Artifacts/Mona-Lisa.png", completion: 73 },
-      ]
+      ].sort((a, b) => b.completion - a.completion)
     },
     dutch: {
       name: "Dutch",
@@ -138,9 +141,30 @@ const CompletionRate = () => {
         { name: "Rosetta Stone", color: "#9B8B7E", pic: "/assets/Artifacts/Rosetta-Stone.png", completion: 86 },
         { name: "Van Gough Self-Portrait", color: "#D4A574", pic: "/assets/Artifacts/Van-Gough.png", completion: 83 },
         { name: "Mona Lisa", color: "#B8926A", pic: "/assets/Artifacts/Mona-Lisa.png", completion: 90 },
-      ]
+      ].sort((a, b) => b.completion - a.completion)
     }
   }), []);
+
+  const minDistance = 10;
+
+  const handleRangeChange = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (activeThumb === 0) {
+      setCompletionRange([
+        Math.min(newValue[0], completionRange[1] - minDistance),
+        completionRange[1],
+      ]);
+    } else {
+      setCompletionRange([
+        completionRange[0],
+        Math.max(newValue[1], completionRange[0] + minDistance),
+      ]);
+    }
+  };
+
 
   const toggleLanguage = (langKey) => {
     setExpandedLang(expandedLang === langKey ? null : langKey);
@@ -158,7 +182,7 @@ const CompletionRate = () => {
     >
       <div
         style={{
-          maxWidth: "1400px",
+          maxWidth: "1475px",
           margin: "0 auto",
         }}
       >
@@ -172,6 +196,23 @@ const CompletionRate = () => {
             >
           Language Artifact Completion
         </h1>
+
+        <div style={{ marginBottom: "32px" }}>
+          <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#1c2429", marginBottom: "12px" }}>
+            Filter by completion rate ({completionRange[0]}% - {completionRange[1]}%)
+          </h3>
+          <Box sx={{ width: 300 }}>
+            <Slider
+              getAriaLabel={() => 'Minimum distance'}
+              value={completionRange}
+              onChange={handleRangeChange}
+              valueLabelDisplay="auto"
+              disableSwap
+              min={0}
+              max={100}
+            />
+          </Box>
+        </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           {Object.entries(languagesData).map(([key, lang]) => (
@@ -248,7 +289,13 @@ const CompletionRate = () => {
                       marginTop: "24px" ,
                     }}
                   >
-                    {lang.artifacts.map((artifact, idx) => (
+                    {lang.artifacts
+                    .filter(
+                      (artifact) =>
+                        artifact.completion >= completionRange[0] &&
+                        artifact.completion <= completionRange[1]
+                    )
+                    .map((artifact, idx) => (
                       <div
                         key={idx}
                         style={{
@@ -256,7 +303,6 @@ const CompletionRate = () => {
                           backgroundColor: "#f6f6f6ff",
                           borderRadius: "12px",
                         }}
-                        
                       >
                             <h3
                             style={{
