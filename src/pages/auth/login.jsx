@@ -11,7 +11,7 @@ import { isEmail, passwordMin, sanitizeText } from "../../utils/validator";
 import AUTH_FEATURE_CARDS from "./cards";
 import { useAuth } from "../../context/auth-context";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase"; // ✅ Firebase import
+import { auth } from "../../firebase";
 
 export default function Login() {
   useEffect(() => {
@@ -33,7 +33,6 @@ export default function Login() {
 
   const passOk = passwordMin(5);
 
-  // 🧭 Redirect automatically when logged in
   useEffect(() => {
     if (user) {
       console.log("[Login] Authenticated user detected:", user.email);
@@ -51,15 +50,12 @@ export default function Login() {
       const userCred = await signInWithEmailAndPassword(auth, cleanEmail, password);
       const firebaseUser = userCred.user;
 
-      // ✅ keep user in context
       setAuthUser(firebaseUser);
 
-      // ✅ optional: if you want to use the token later
       const token = await firebaseUser.getIdToken();
       localStorage.setItem("token", token);
 
       console.log("[Login] Login successful:", firebaseUser.email);
-      // no direct navigate here — handled by useEffect
     } catch (e) {
       console.error("[Login Error]", e);
       let msg = e.message || "Login failed";
@@ -74,7 +70,6 @@ export default function Login() {
 
   return (
     <div className="sign_up_container">
-      {/* 🔔 Alert banner */}
       <AlertBanner
         open={alertState.open}
         message={alertState.message}
@@ -83,12 +78,12 @@ export default function Login() {
       />
 
       <div className="sign_up_left">
-        <h1 className="sign_up_header">Log in</h1>
+        <img height={"auto"} width={"250px"} src="/assets/auth-logo.png"/>
 
         <div className={`sign_up_inputs ${showErrors ? "show-errors" : ""}`}>
           <StringInput
             title="Email"
-            placeholder="student@example.com"
+            placeholder="user@example.com"
             onChange={setEmail}
             value={email}
             validate={isEmail}
@@ -105,18 +100,22 @@ export default function Login() {
 
         <div className="sign_up_footer">
           <PrimaryButton
-            label={loading ? "..." : "Log in"}
+            label={loading ? "Logging in..." : "Log in"}
             bgColor={app_colors.primary || "#3e4b53ff"}
             onClick={onLogin}
             disabled={loading}
             className="btn-register"
-            style={{ width: "50%" }}
           />  
 
-          <p className="forgot_password" style={{ marginTop: "10px" }}>
-            <Link to="/forgot-password">Forgot password?</Link>
-          </p>
+          <div className="or-divider">
+            <span className="or-line"></span>
+            <span className="or-text">OR</span>
+            <span className="or-line"></span>
+          </div>
 
+          <Link to="/forgot-password" className="forgot-password-link">
+            Forgot password?
+          </Link>
 
           <p className="sign_up_sure">
             Don't have an account? <Link to="/signup">Register</Link>

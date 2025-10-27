@@ -11,7 +11,7 @@ import { isEmail, passwordMin, sanitizeText } from "../../utils/validator";
 import AUTH_FEATURE_CARDS from "./cards";
 import { useAuth } from "../../context/auth-context";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../../firebase"; // ✅ Firebase import
+import { auth } from "../../firebase";
 
 export default function SignUp() {
   useEffect(() => {
@@ -55,21 +55,12 @@ export default function SignUp() {
       const cleanEmail = sanitizeText(email, { maxLen: 254 });
       const cleanName = `${sanitizeText(firstName)} ${sanitizeText(lastName)}`;
 
-      // ✅ Create Firebase user
       const userCred = await createUserWithEmailAndPassword(auth, cleanEmail, password);
       await updateProfile(userCred.user, { displayName: cleanName });
 
-      // ✅ Add to context
       setAuthUser(userCred.user);
 
-      // 🔁 Optional: Sync with backend
-      // const token = await userCred.user.getIdToken();
-      // await authFetch("http://localhost:8000/users/sync", {
-      //   method: "POST",
-      //   body: JSON.stringify({ email: cleanEmail, name: cleanName }),
-      // });
-
-      navigate("/"); // redirect anywhere after signup
+      navigate("/");
     } catch (e) {
       console.error("[SignUp Error]", e);
       let msg = e.message || "Sign up failed";
@@ -84,7 +75,6 @@ export default function SignUp() {
 
   return (
     <div className="sign_up_container">
-      {/* 🔔 Alert Banner */}
       <AlertBanner
         open={alertState.open}
         message={alertState.message}
@@ -93,7 +83,7 @@ export default function SignUp() {
       />
 
       <div className="sign_up_left">
-        <h1 className="sign_up_header">Register</h1>
+        <img height={"auto"} width={"250px"} src="/assets/auth-logo.png"/>
 
         <div className={`sign_up_inputs ${showErrors ? "show-errors" : ""}`}>
           <div style={{ display: "flex", gap: 10 }}>
@@ -115,7 +105,7 @@ export default function SignUp() {
 
           <StringInput
             title="Email"
-            placeholder="student@example.com"
+            placeholder="user@example.com"
             onChange={setEmail}
             value={email}
             validate={isEmail}
@@ -140,13 +130,18 @@ export default function SignUp() {
 
         <div className="sign_up_footer">
           <PrimaryButton
-            label={loading ? "..." : "Sign Up"}
+            label={loading ? "Signing Up..." : "Sign Up"}
             bgColor={"#3e4b53ff"}
             onClick={onSignUp}
             disabled={loading}
             className="btn-register"
-            style={{ width: "50%" }}
           />
+
+          <div className="or-divider">
+            <span className="or-line"></span>
+            <span className="or-text">OR</span>
+            <span className="or-line"></span>
+          </div>
 
           <p className="sign_up_sure">
             Already have an account? <Link to="/login">Log in</Link>

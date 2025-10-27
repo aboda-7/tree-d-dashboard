@@ -136,7 +136,7 @@ export default function ResetPassword() {
             onClick={handleReset}
             disabled={loading}
             className="btn-register"
-            style={{ width: "55%" }}
+            style={{ width: "100%" }}
           />
 
           <p className="sign_up_sure">

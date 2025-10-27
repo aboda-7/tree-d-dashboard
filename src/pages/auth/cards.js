@@ -13,11 +13,11 @@ export const AUTH_FEATURE_CARDS = [
         title: "Your Gate to the Past",
         icon: "/assets/Auth/Slide2.png",
         description:
-            "",
+            "Forget boring tours — Treed turns your walks into immersive stories. It’s like having a time machine in your pocket",
         bgColor: "#b3cfff",
     },
     {
-        title: "Manage Exhibits Effortlessly",
+        title: "Manage Exhibits",
         icon: "/assets/Auth/Slide3.png",
         description:
             "Manage exhibits easily. See which ones attract visitors. Make smarter, data-driven choices.",

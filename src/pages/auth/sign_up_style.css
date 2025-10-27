@@ -5,7 +5,6 @@
     height: 100vh;
 }
 
-
 .sign_up_left{
     display: flex;
     flex-direction: column;
@@ -19,7 +18,7 @@
     font-size: 56px;
     font-weight: 800;
     letter-spacing: -0.02em;
-    margin: 0;                    /* let space-around do the vertical spacing */
+    margin: 0;
     color: var(--text);
 }
 
@@ -38,15 +37,67 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    width: 80%;
+    width: 100%;
 }
 
+.sign_up_footer .btn-register {
+    width: 100%;
+}
 
+/* OR divider styling */
+.or-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+.or-line {
+    flex: 1;
+    height: 1px;
+    background-color: #d1d5db;
+}
+
+.or-text {
+    color: #6b7280;
+    font-family: "Montserrat Regular";
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Forgot password link */
+.forgot-password-link {
+    color: var(--text);
+    font-family: "Montserrat Regular";
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.forgot-password-link:hover {
+    opacity: 0.7;
+}
 
 .sign_up_sure{
     color: var(--text);
     font-family: "Montserrat Regular";
     font-size: 20px;
+    text-align: center;
+    margin: 0;
+}
+
+.sign_up_sure a {
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+
+.sign_up_sure a:hover {
+    opacity: 0.7;
 }
 
 .sign_up_right {
@@ -74,34 +125,32 @@
 
 /* underline-only error state */
 .show-errors .si-input-row:not(.valid) .si-input {
-    border-color: transparent !important;   /* hide existing borders */
-    border-bottom: 2px solid #ef4444 !important; /* red underline */
+    border-color: transparent !important;
+    border-bottom: 2px solid #ef4444 !important;
     border-radius: 0 !important;
 }
 
-/* optional: smooth feel */
 .si-input {
     transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
-/* keep focus ring minimal when invalid (optional) */
 .show-errors .si-input-row:not(.valid) .si-input:focus {
     outline: none;
     box-shadow: none;
 }
 
-/* ✅ Responsive for portrait phones */
+/* Responsive for portrait phones */
 @media (max-width: 768px) {
   .sign_up_container {
     flex-direction: column;
-    height: auto; /* let content grow */
+    height: auto;
   }
 
   .sign_up_left {
     width: 100%;
-    padding: 2rem 1.5rem; /* tighter padding for small screens */
+    padding: 2rem 1.5rem;
     justify-content: flex-start;
-    gap: 2rem; /* spacing instead of space-around */
+    gap: 2rem;
   }
 
   .sign_up_header {
@@ -123,18 +172,21 @@
     text-align: center;
   }
 
+  .forgot-password-link {
+    font-size: 16px;
+  }
+
   .sign_up_actions {
     flex-direction: column;
     gap: 0.75rem;
   }
 
-  /* 🚫 hide slider on portrait phones */
   .sign_up_right {
     display: none;
   }
 }
 
-/* ✅ Portrait tablets */
+/* Portrait tablets */
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
   .sign_up_container {
     flex-direction: column;
@@ -143,7 +195,7 @@
 
   .sign_up_left {
     width: 100%;
-    padding: 3rem 4rem; /* a lil more breathing room than phones */
+    padding: 3rem 4rem;
     justify-content: flex-start;
     gap: 2.5rem;
   }
@@ -167,33 +219,40 @@
     text-align: center;
   }
 
+  .forgot-password-link {
+    font-size: 17px;
+  }
+
   .sign_up_actions {
     flex-direction: column;
     gap: 1rem;
   }
 
-  /* 🚫 hide slider on portrait tablets */
   .sign_up_right {
     display: none;
   }
 }
 
-/* ✅ Landscape tablets (iPad, etc.) */
+/* Landscape tablets */
 @media (min-width: 768px) and (max-width: 1200px) and (orientation: landscape) {
   .sign_up_header {
-    font-size: 40px;  /* smaller than 56px desktop */
+    font-size: 40px;
   }
 
   .sign_up_sure {
-    font-size: 16px; /* tighter text for footer */
+    font-size: 16px;
+  }
+
+  .forgot-password-link {
+    font-size: 16px;
   }
 
   .sign_up_inputs {
-    gap: 1rem; /* reduce spacing so it all fits */
+    gap: 1rem;
   }
 
   .sign_up_left {
-    padding: 2rem 3rem; /* less padding to give form more room */
+    padding: 2rem 3rem;
   }
 
   .sign_up_actions {
@@ -201,11 +260,11 @@
   }
 }
 
-/* ✅ Landscape phones */
+/* Landscape phones */
 @media (max-width: 768px) and (orientation: landscape) {
   .sign_up_container {
     flex-direction: row;
-    height: auto; /* let it scroll if needed */
+    height: auto;
   }
 
   .sign_up_left {
@@ -215,7 +274,7 @@
   }
 
   .sign_up_header {
-    font-size: 28px; /* smaller than portrait */
+    font-size: 28px;
     text-align: center;
   }
 
@@ -233,39 +292,42 @@
     text-align: center;
   }
 
+  .forgot-password-link {
+    font-size: 14px;
+  }
+
   .sign_up_actions {
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  /* 🚫 still hide slider in phone landscape */
   .sign_up_right {
     display: none;
   }
 }
 
-/* ✅ Small phones in landscape (like iPhone 12 Pro) */
+/* Small phones in landscape */
 @media (max-width: 900px) and (max-height: 500px) and (orientation: landscape) {
   .sign_up_container {
-    flex-direction: column; /* stack so it fits */
+    flex-direction: column;
     height: auto;
   }
 
   .sign_up_left {
     width: 100%;
-    padding: 1rem;       /* super tight padding */
+    padding: 1rem;
     gap: 0.75rem;
     justify-content: flex-start;
   }
 
   .sign_up_header {
-    font-size: 22px;     /* way smaller */
+    font-size: 22px;
     font-weight: 700;
     text-align: center;
   }
 
   .sign_up_inputs {
-    gap: 0.5rem;         /* tighter gaps between fields */
+    gap: 0.5rem;
   }
 
   .sign_up_footer {
@@ -278,38 +340,41 @@
     text-align: center;
   }
 
+  .forgot-password-link {
+    font-size: 12px;
+  }
+
   .sign_up_actions {
     flex-direction: column;
     gap: 0.5rem;
   }
 
   .sign_up_actions .custom-btn {
-    height: 40px;       /* shorter buttons */
+    height: 40px;
     font-size: 14px;
   }
 
-  /* 🚫 Kill the slider completely */
   .sign_up_right {
     display: none !important;
   }
 }
 
-/* ✅ Small-height landscape (iPhone 14 Pro Max & similar) */
+/* Small-height landscape */
 @media (max-width: 950px) and (max-height: 500px) and (orientation: landscape) {
   .sign_up_container {
-    flex-direction: column; /* stack vertically */
+    flex-direction: column;
     height: auto;
   }
 
   .sign_up_left {
     width: 100%;
-    padding: 1rem 1.25rem; /* reduce padding */
+    padding: 1rem 1.25rem;
     gap: 0.75rem;
     justify-content: flex-start;
   }
 
   .sign_up_header {
-    font-size: 24px; /* smaller header */
+    font-size: 24px;
     font-weight: 700;
     text-align: center;
   }
@@ -328,6 +393,10 @@
     text-align: center;
   }
 
+  .forgot-password-link {
+    font-size: 13px;
+  }
+
   .sign_up_actions {
     flex-direction: column;
     gap: 0.5rem;
@@ -338,9 +407,7 @@
     font-size: 14px;
   }
 
-  /* 🚫 slider gone in landscape phones */
   .sign_up_right {
     display: none !important;
   }
 }
-

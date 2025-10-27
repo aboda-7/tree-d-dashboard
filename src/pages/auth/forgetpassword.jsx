@@ -77,7 +77,7 @@ export default function ForgotPassword() {
             onClick={onResetPassword}
             disabled={loading}
             className="btn-register"
-            style={{ width: "60%" }}
+            style={{ width: "100%" }}
           />
 
           <p className="sign_up_sure">
