@@ -63,7 +63,7 @@ export default function ForgotPassword() {
         <div className={`sign_up_inputs ${showErrors ? "show-errors" : ""}`}>
           <StringInput
             title="Email"
-            placeholder="student@example.com"
+            placeholder="user@example.com"
             onChange={setEmail}
             value={email}
             validate={isEmail}
