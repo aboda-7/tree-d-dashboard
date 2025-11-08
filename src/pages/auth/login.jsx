@@ -117,9 +117,9 @@ export default function Login() {
             Forgot password?
           </Link>
 
-          <p className="sign_up_sure">
+          {/* <p className="sign_up_sure">
             Don't have an account? <Link to="/signup">Register</Link>
-          </p>
+          </p> */}
         </div>
       </div>
 

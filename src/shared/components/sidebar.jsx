@@ -88,6 +88,28 @@ const Sidebar = ({ bgColor, onExpandChange }) => {
           to="/completion-rate"
         />
         <SidebarButton
+          icon={
+            location.pathname === "/analytics"
+              ? "/assets/Sidebar/Analytics-Black.png"
+              : "/assets/Sidebar/Analytics-White.png"
+          }
+          label="Analytics"
+          isExpanded={isExpanded}
+          active={location.pathname === "/analytics"}
+          to="/analytics"
+        />
+        <SidebarButton
+          icon={
+            location.pathname === "/invite"
+              ? "/assets/Sidebar/Invite-Black.png"
+              : "/assets/Sidebar/Invite-White.png"
+          }
+          label="Invite"
+          isExpanded={isExpanded}
+          active={location.pathname === "/invite"}
+          to="/invite"
+        />
+        <SidebarButton
           icon={"/assets/Sidebar/Logout-White.png"}
           label="Logout"
           isExpanded={isExpanded}

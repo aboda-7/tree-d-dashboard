@@ -4,7 +4,6 @@ import { useAuth } from "./context/auth-context";
 import { useState, useEffect } from "react";
 import { auth } from "./firebase";
 
-
 import "./App.css";
 
 const Dashboard = React.lazy(() => import("./pages/dashboard/dashboard"));
@@ -18,6 +17,9 @@ const Signup = React.lazy(() => import("./pages/auth/signup"));
 const ForgotPassword = React.lazy(() => import("./pages/auth/forgetpassword"));
 const ResetPassword = React.lazy(() => import("./pages/auth/resetpassword"));
 const CompletionRate = React.lazy(() => import("./pages/completion-rate/completion-rate"));
+const Analytics = React.lazy(() => import("./pages/analytics/analytics"));
+const InvitePage = React.lazy(() => import("./pages/invite/invite-page"));
+const AcceptInvitePage = React.lazy(() => import("./pages/invite/accept-invite-page"));
 
 // 🧩 ProtectedRoute component
 function ProtectedRoute({ children }) {
@@ -32,7 +34,6 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-
 function App() {
   useEffect(() => {
     console.log("User from Firebase Auth:", auth.currentUser);
@@ -46,6 +47,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />}/>
+        <Route path="/accept-invite" element={<AcceptInvitePage />} />
 
         {/* ✅ each protected page wrapped individually */}
         <Route
@@ -89,14 +91,29 @@ function App() {
           }
         />
         <Route 
-          path="completion-rate"
+          path="/completion-rate"
           element={
             <ProtectedRoute>
               <CompletionRate/>
             </ProtectedRoute>
           }
           />
-
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <Analytics/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/invite"
+          element={
+            <ProtectedRoute>
+              <InvitePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

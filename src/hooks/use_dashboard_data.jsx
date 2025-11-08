@@ -27,7 +27,7 @@ export const useDashboardData = () => {
 
         const token = await user.getIdToken();
 
-        const response = await fetch(`${process.env.REACT_APP_API_URL}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/getdata`, {
           headers: {
             "Authorization": `Bearer ${token}`,
             "ngrok-skip-browser-warning": "true",
