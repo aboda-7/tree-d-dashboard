@@ -1,0 +1,127 @@
+import React, { useState, useEffect } from "react";
+import SidebarButton from "./sidebar_button";
+import "../style/sidebar_style.css";
+import { useLocation } from "react-router-dom";
+import { useAuth } from "../../context/auth-context"; // ✅ import logout from context
+
+const Sidebar = ({ bgColor, onExpandChange }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const location = useLocation();
+  const { logout } = useAuth(); // ✅ grab logout function
+
+  const handleMouseEnter = () => setIsExpanded(true);
+  const handleMouseLeave = () => setIsExpanded(false);
+
+  useEffect(() => {
+    if (onExpandChange) onExpandChange(isExpanded);
+  }, [isExpanded, onExpandChange]);
+
+  return (
+    <div
+      className={`sidebar ${isExpanded ? "expanded" : ""}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{ backgroundColor: bgColor }}
+    >
+      <div className={`logo ${isExpanded ? "expanded" : ""}`}>
+        {isExpanded ? (
+          <img src="/assets/logo-expanded.png" alt="Logo" className="logo-image" />
+        ) : (
+          <img src="/assets/logo.png" alt="Logo" className="logo-image" />
+        )}
+      </div>
+
+      <div className="nav-icons">
+        <SidebarButton
+          icon={
+            location.pathname === "/home"
+              ? "/assets/Sidebar/Home-Black.png"
+              : "/assets/Sidebar/Home-White.png"
+          }
+          label="Home"
+          isExpanded={isExpanded}
+          active={location.pathname === "/home"}
+          to="/home"
+        />
+        <SidebarButton
+          icon={
+            location.pathname === "/artifacts"
+              ? "/assets/Sidebar/Artifact-Black.png"
+              : "/assets/Sidebar/Artifact-White.png"
+          }
+          label="Artifacts"
+          isExpanded={isExpanded}
+          active={location.pathname === "/artifacts"}
+          to="/artifacts"
+        />
+        <SidebarButton
+          icon={
+            location.pathname === "/languages"
+              ? "/assets/Sidebar/Languages-Black.png"
+              : "/assets/Sidebar/Languages-White.png"
+          }
+          label="Languages"
+          isExpanded={isExpanded}
+          active={location.pathname === "/languages"}
+          to="/languages"
+        />
+        <SidebarButton
+          icon={
+            location.pathname === "/handsets"
+              ? "/assets/Sidebar/Handset-Black.png"
+              : "/assets/Sidebar/Handset-White.png"
+          }
+          label="Handsets"
+          isExpanded={isExpanded}
+          active={location.pathname === "/handsets"}
+          to="/handsets"
+        />
+        <SidebarButton
+          icon={
+            location.pathname === "/completion-rate"
+              ? "/assets/Sidebar/CompletionRate-Black.png"
+              : "/assets/Sidebar/CompletionRate-White.png"
+          }
+          label="Completion Rate"
+          isExpanded={isExpanded}
+          active={location.pathname === "/completion-rate"}
+          to="/completion-rate"
+        />
+        <SidebarButton
+          icon={
+            location.pathname === "/analytics"
+              ? "/assets/Sidebar/Analytics-Black.png"
+              : "/assets/Sidebar/Analytics-White.png"
+          }
+          label="Analytics"
+          isExpanded={isExpanded}
+          active={location.pathname === "/analytics"}
+          to="/analytics"
+        />
+        <SidebarButton
+          icon={
+            location.pathname === "/invite"
+              ? "/assets/Sidebar/Invite-Black.png"
+              : "/assets/Sidebar/Invite-White.png"
+          }
+          label="Invite"
+          isExpanded={isExpanded}
+          active={location.pathname === "/invite"}
+          to="/invite"
+        />
+        <SidebarButton
+          icon={"/assets/Sidebar/Logout-White.png"}
+          label="Logout"
+          isExpanded={isExpanded}
+          onClick={async () => {
+            await logout();
+            localStorage.removeItem("token"); 
+            window.location.href = "/login"; 
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;
